@@ -4,5 +4,8 @@ rvm:
 - 1.9.3
 - jruby-19mode
 - rbx-19mode
+env:
+  global:
+  - COVERAGE=1
 notifications:
   email: github+rack-auth-travis@modcloth.com
