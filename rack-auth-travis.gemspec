@@ -1,11 +1,7 @@
 # vim:fileencoding=utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rack/auth/travis'
-
 Gem::Specification.new do |spec|
   spec.name          = 'rack-auth-travis'
-  spec.version       = Rack::Auth::Travis::VERSION
+  spec.version       = '0.1.0'
   spec.authors       = ['Dan Buch']
   spec.email         = ['d.buch@modcloth.com']
   spec.summary       = %q{Rack auth for Travis CI webhook requests!}
