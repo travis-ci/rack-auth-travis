@@ -1,2 +1,8 @@
+AllCops:
+  Includes:
+    - Gemfile
+    - Rakefile
+    - Guardfile
+
 Documentation:
   Enabled: false

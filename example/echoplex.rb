@@ -54,7 +54,9 @@ module Echoplex
         <button id="fake_submit">POST</button>
       </div>
     </form>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script
+      src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+    </script>
     <script src="/sha256.js"></script>
     <script type="text/javascript">
     $( function () {
