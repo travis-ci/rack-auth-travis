@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# vim:fileencoding=utf-8
+require 'json'
+require 'rack-auth-travis'
+
+if ARGV.include?('-h') || ARGV.include?('--help')
+  $stdout.puts <<-EOUSAGE.gsub(/^ {4}/, '')
+    Usage: #{File.basename($PROGRAM_NAME)} < repo-slug-token-map.json
+
+    Convert a JSON mapping of repo slugs to auth tokens into environment
+    variables usable by the Rack::Auth::Travis ENV-based authenticator.
+  EOUSAGE
+  exit 0
+end
+
+JSON.parse($stdin.read).each do |k, v|
+  $stdout.puts "#{Rack::Auth::Travis.repo_env_key(k)}=#{v}"
+end
+exit 0

@@ -1,6 +1,7 @@
 # vim:fileencoding=utf-8
 
 require 'digest'
+require 'json'
 require 'rack/auth/abstract/handler'
 require 'rack/auth/abstract/request'
 
