@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+# vim:fileencoding=utf-8
+require 'json'
+require 'rack-auth-travis'
+
+def usage
+  $stdout.puts <<-EOUSAGE.gsub(/^ {4}/, '')
+    Usage: #{File.basename($PROGRAM_NAME)} <repo-slug> <token>
+
+    Get the sha256 hash of a "repo slug" and Travis token just like the one
+    expected in the 'Authorization' header of a webhook request.
+  EOUSAGE
+end
+
+if ARGV.include?('-h') || ARGV.include?('--help') || !ARGV[0] || !ARGV[1]
+  usage
+  exit 0
+end
+
+owner_name, name = ARGV[0].split('/', 2)
+$stdout.puts Rack::Auth::Travis.authz(owner_name, name, ARGV[1])
+exit 0
