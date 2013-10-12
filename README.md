@@ -18,6 +18,7 @@ Add it to your rack!
 ``` ruby
 # config.ru
 require './my_fancy_app'
+require 'rack-auth-travis'
 
 use Rack::Auth::Travis
 run MyFancyApp.new
