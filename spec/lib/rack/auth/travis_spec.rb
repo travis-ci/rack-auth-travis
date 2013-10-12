@@ -36,66 +36,7 @@ describe Rack::Auth::Travis do
   end
 
   let :valid_payload do
-    {
-      'payload' => {
-        'id' => 1,
-        'number' => 1,
-        'status' => nil,
-        'started_at' => nil,
-        'finished_at' => nil,
-        'status_message' => 'Passed',
-        'commit' => '62aae5f70ceee39123ef',
-        'branch' => 'master',
-        'message' => 'the commit message',
-        'compare_url' => (
-          "https://github.com/#{owner}/minimal/compare/master...develop"
-        ),
-        'committed_at' => '2011-11-11T11: 11: 11Z',
-        'committer_name' => 'Sven Fuchs',
-        'committer_email' => 'svenfuchs@artweb-design.de',
-        'author_name' => 'Sven Fuchs',
-        'author_email' => 'svenfuchs@artweb-design.de',
-        'repository' => {
-          'id' => 1,
-          'name' => repo,
-          'owner_name' => owner,
-          'url' => "http://github.com/#{owner}/minimal"
-        },
-        'matrix' => [
-          {
-            'id' => 2,
-            'repository_id' => 1,
-            'number' => '1.1',
-            'state' => 'created',
-            'started_at' => nil,
-            'finished_at' => nil,
-            'config' => {
-              'notifications' => {
-                'webhooks' => [
-                  'http://evome.fr/notifications',
-                  'http://example.com/'
-                ]
-              }
-            },
-            'status' => nil,
-            'log' => '',
-            'result' => nil,
-            'parent_id' => 1,
-            'commit' => '62aae5f70ceee39123ef',
-            'branch' => 'master',
-            'message' => 'the commit message',
-            'committed_at' => '2011-11-11T11: 11: 11Z',
-            'committer_name' => 'Sven Fuchs',
-            'committer_email' => 'svenfuchs@artweb-design.de',
-            'author_name' => 'Sven Fuchs',
-            'author_email' => 'svenfuchs@artweb-design.de',
-            'compare_url' => (
-              "https://github.com/#{owner}/minimal/compare/master...develop"
-            )
-          }
-        ]
-      }
-    }
+    Support.valid_payload(owner, repo)
   end
 
   let :valid_payload_json do

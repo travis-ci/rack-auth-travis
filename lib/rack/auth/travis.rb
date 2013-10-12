@@ -118,10 +118,18 @@ module Rack
 
         def repository
           @repository ||= ((
-            JSON.parse(request.env['rack.input'].read) || {}
+            JSON.parse(request_body) || {}
           )['payload'] || {})['repository'] || {}
         rescue
           {}
+        end
+
+        def request_body
+          @request_body ||= begin
+                              body = request.env['rack.input'].read
+                              request.env['rack.input'].rewind
+                              body
+                            end
         end
       end
     end
