@@ -1,0 +1,17 @@
+<p><a id="redo" href="unprotected">again again!</a></p>
+<dl>
+  <dt>authz</dt>
+  <dd><%= @authz.inspect %></dd>
+  <dt>rack input length</dt>
+  <dd><%= @input_length.inspect %></dd>
+  <dt>repo owner name</dt>
+  <dd><%= @owner_name.inspect %></dd>
+  <dt>repo name</dt>
+  <dd><%= @name.inspect %></dd>
+  <dt>error</dt>
+  <dd><%= @error.inspect %></dd>
+</dl>
+
+<% @env.sort.each do |k, v| %>
+<!-- <%= k.to_s.gsub(/--/, '- - ') %>=<%= v.to_s.gsub(/--/, '- - ') %> -->
+<% end %>

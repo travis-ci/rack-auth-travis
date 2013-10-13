@@ -1,0 +1,72 @@
+<form action="protected" method="post">
+  <div>
+    <label for="owner_name">Repo Owner</label>
+  </div>
+  <div>
+    <input type="text" id="owner_name" name="owner_name"
+      placeholder="<github user or org>" value="<%= @owner_name %>"
+      size="40" autofocus />
+  </div>
+  <div>
+    <label for="name">Repo Name</label>
+  </div>
+  <div>
+    <input type="text" id="name" name="name"
+      placeholder="<github repo>" value="<%= @name %>"
+      size="40" />
+  </div>
+  <div>
+    <label for="token">Token</label>
+  </div>
+  <div>
+    <input type="text" id="token" name="token"
+      placeholder="<travis token>" value="<%= @token %>"
+      size="30" maxlength="20" />
+  </div>
+  <div>
+    <label for="payload">JSON payload</label>
+  </div>
+  <textarea id="payload" name="payload" rows="20" cols="80">
+<%= @default_json %>
+  </textarea>
+  <div>
+    <button id="fake_submit">POST</button>
+  </div>
+</form>
+<script
+  src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+</script>
+<script src="/sha256.js"></script>
+<script type="text/javascript">
+$( function () {
+  function travisAuthz ( ownerName, name, token ) {
+    var toHash = ownerName + '/' + name + token;
+    return CryptoJS.SHA256( toHash ).toString( CryptoJS.enc.Hex );
+  }
+
+  $( '#fake_submit' ).click( function ( event ) {
+    event.preventDefault();
+    var payload = $( '#payload' ).val();
+    console.log( 'sending payload %o', payload );
+    $.ajax({
+      url: 'protected',
+      type: 'POST',
+      headers: {
+        'Authorization': travisAuthz(
+          $( '#owner_name' ).val(),
+          $( '#name' ).val(),
+          $( '#token' ).val()
+        ),
+        'Accept': 'text/html'
+      },
+      contentType: 'application/json',
+      data: payload,
+      dataType: 'html',
+      success: function( data ) {
+        window.history.pushState(null, "result", "protected");
+        $( '#content' ).html( data );
+      }
+    });
+  });
+});
+</script>

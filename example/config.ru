@@ -7,6 +7,8 @@ require 'rack-auth-travis'
 require './echoplex'
 
 ENV['TRAVIS_AUTH_DEFAULT'] ||= 'a' * 20
+ENV['TRAVIS_REPO_OWNER_NAME'] ||= 'foo'
+ENV['TRAVIS_REPO_NAME'] ||= 'bar'
 
 sha256js = File.expand_path('../public/sha256.js', __FILE__)
 

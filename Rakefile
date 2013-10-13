@@ -7,7 +7,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
   t.rspec_opts = '-f doc'
 end
 
-load './example/tasks.rake'
+load './example/Rakefile'
 
 desc 'Run rubocop'
 task :rubocop do

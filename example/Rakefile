@@ -42,6 +42,7 @@ end
 desc 'Run example application'
 task :example do
   Dir.chdir(File.expand_path('../', __FILE__)) do
-    exec 'rackup -I$PWD/../lib'
+    ENV['BUNDLE_GEMFILE'] = nil
+    exec 'bundle exec rackup -I$PWD/../lib'
   end
 end
