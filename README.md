@@ -15,6 +15,8 @@ gem 'rack-auth-travis'
 
 Add it to your rack!
 
+Take a look at the [example](./example) or do something like this:
+
 ``` ruby
 # config.ru
 require './my_fancy_app'
