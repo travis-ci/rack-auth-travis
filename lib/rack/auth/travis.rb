@@ -37,8 +37,6 @@ module Rack
         ENVAuthenticator.new
       end
 
-      private
-
       def configure_authenticators
         @authenticators = []
         @config[:sources].each do |source|
