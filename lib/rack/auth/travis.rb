@@ -8,7 +8,7 @@ require 'rack/auth/abstract/request'
 module Rack
   module Auth
     class Travis < ::Rack::Auth::AbstractHandler
-      VERSION = '0.1.0'
+      VERSION = '0.2.0'
 
       def self.authz(owner_name, name, token)
         ::Digest::SHA256.hexdigest([owner_name, name].join('/') + token)
