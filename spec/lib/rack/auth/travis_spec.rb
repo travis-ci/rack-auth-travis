@@ -137,15 +137,30 @@ describe Rack::Auth::Travis do
       protected_app
     end
 
+    let(:env_key) { described_class.repo_env_key(repo_slug) }
+
+    before { ENV[env_key] = token }
+    after { ENV[env_key] = nil }
+
     it 'responds 200' do
-      env_key = described_class.repo_env_key(repo_slug)
-      ENV[env_key] = token
       post '/', valid_payload_json, {
         'HTTP_AUTHORIZATION' => valid_auth_header,
         'CONTENT_TYPE' => 'application/json'
       }
-      ENV[env_key] = nil
       last_response.status.should == 200
+    end
+
+    context 'when X-Travis-Repo-Slug is present' do
+      it 'does not consume rack.input' do
+        Rack::Auth::Travis::Request.any_instance
+          .should_not_receive(:repository)
+        post '/', valid_payload_json, {
+          'HTTP_AUTHORIZATION' => valid_auth_header,
+          'CONTENT_TYPE' => 'application/json',
+          'HTTP_X_TRAVIS_REPO_SLUG' => repo_slug,
+        }
+        last_response.status.should == 200
+      end
     end
   end
 end
