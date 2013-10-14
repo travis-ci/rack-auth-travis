@@ -18,6 +18,16 @@ module Rack
         "TRAVIS_AUTH_#{repo_slug.gsub(/[^\p{Alnum}]/, '_').upcase}"
       end
 
+      def self.valid?(env)
+        ::Rack::Auth::Travis::Request.new(env).valid?
+      end
+
+      def self.default_authenticators
+        [
+          ::Rack::Auth::Travis::ENVAuthenticator.new
+        ]
+      end
+
       def initialize(app, config = {}, &authenticator)
         @config = config
         @config[:sources] ||= [:env]
@@ -26,10 +36,10 @@ module Rack
       end
 
       def call(env)
-        auth_req = Travis::Request.new(env)
+        auth_req = Travis::Request.new(env, @authenticators)
         return unauthorized unless auth_req.provided?
         return bad_request unless auth_req.travis? && auth_req.json?
-        return @app.call(env) if valid?(auth_req)
+        return @app.call(env) if auth_req.valid?
         unauthorized
       end
 
@@ -46,13 +56,6 @@ module Rack
         if @authenticator
           @authenticators << DIYAuthenticator.new(@authenticator)
         end
-      end
-
-      def valid?(auth_req)
-        @authenticators.each do |authenticator|
-          return true if authenticator.valid?(auth_req)
-        end
-        false
       end
 
       def challenge
@@ -88,12 +91,27 @@ module Rack
       end
 
       class Request < ::Rack::Auth::AbstractRequest
+        JSON_REGEXP = /^application\/([\w!#\$%&\*`\-\.\^~]*\+)?json$/i
+
+        def initialize(env, authenticators = Travis.default_authenticators)
+          super(env)
+          @authenticators = authenticators || []
+        end
+
         def travis?
           token =~ /[\da-f]{64}/i
         end
 
         def json?
-          request.env['CONTENT_TYPE'] =~ /^\s*application\/json/i
+          request.env['CONTENT_TYPE'] =~ JSON_REGEXP
+        end
+
+        def valid?
+          return false unless provided? && travis? && json?
+          @authenticators.each do |authenticator|
+            return true if authenticator.valid?(self)
+          end
+          false
         end
 
         def owner_name

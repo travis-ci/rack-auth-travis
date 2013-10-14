@@ -51,6 +51,14 @@ describe Rack::Auth::Travis do
     described_class.new(unprotected_app, realm: 'foo').realm.should == 'foo'
   end
 
+  it 'provides an array of default authenticators' do
+    described_class.default_authenticators.should_not be_empty
+  end
+
+  it 'provides a `.valid?` method for checking arbitrary request envs' do
+    described_class.valid?('HTTP_JUST_KIDDING' => '1').should be_false
+  end
+
   context 'when initialized with an authenticator block' do
     it 'adds a DIYAuthenticator' do
       handler = described_class.new(unprotected_app) { |r, t| true }
