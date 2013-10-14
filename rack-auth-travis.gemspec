@@ -1,7 +1,7 @@
 # vim:fileencoding=utf-8
 Gem::Specification.new do |spec|
   spec.name          = 'rack-auth-travis'
-  spec.version       = '0.1.0'
+  spec.version       = '0.2.0'
   spec.authors       = ['Dan Buch']
   spec.email         = ['d.buch@modcloth.com']
   spec.summary       = %q{Rack auth for Travis CI webhook requests!}
