@@ -116,8 +116,8 @@ module Rack
 
         def owner_name
           return @owner_name if @owner_name
-          if x_travis_repo_slug
-            @owner_name = x_travis_repo_slug.split('/').first
+          if travis_repo_slug
+            @owner_name = travis_repo_slug.split('/').first
           else
             @owner_name = repository['owner_name']
           end
@@ -126,8 +126,8 @@ module Rack
 
         def name
           return @name if @name
-          if x_travis_repo_slug
-            @name = x_travis_repo_slug.split('/').last
+          if travis_repo_slug
+            @name = travis_repo_slug.split('/').last
           else
             @name = repository['name']
           end
@@ -142,8 +142,8 @@ module Rack
           @token ||= parts.first.to_s
         end
 
-        def x_travis_repo_slug
-          @x_travis_repo_slug ||= request.env['HTTP_X_TRAVIS_REPO_SLUG']
+        def travis_repo_slug
+          @travis_repo_slug ||= request.env['HTTP_TRAVIS_REPO_SLUG']
         end
 
         private

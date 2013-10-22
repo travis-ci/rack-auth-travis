@@ -150,14 +150,14 @@ describe Rack::Auth::Travis do
       last_response.status.should == 200
     end
 
-    context 'when X-Travis-Repo-Slug is present' do
+    context 'when Travis-Repo-Slug is present' do
       it 'does not consume rack.input' do
         Rack::Auth::Travis::Request.any_instance
           .should_not_receive(:repository)
         post '/', valid_payload_json, {
           'HTTP_AUTHORIZATION' => valid_auth_header,
           'CONTENT_TYPE' => 'application/json',
-          'HTTP_X_TRAVIS_REPO_SLUG' => repo_slug,
+          'HTTP_TRAVIS_REPO_SLUG' => repo_slug,
         }
         last_response.status.should == 200
       end
