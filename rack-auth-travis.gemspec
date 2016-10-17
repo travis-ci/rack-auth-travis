@@ -4,7 +4,7 @@ Gem::Specification.new do |spec|
   spec.version = '0.2.0'
   spec.authors = ['Dan Buch']
   spec.email = ['dan@travis-ci.org']
-  spec.summary = %q{Rack auth for Travis CI webhook requests!}
+  spec.summary = 'Rack auth for Travis CI webhook requests!'
   spec.description = spec.summary
   spec.homepage = 'https://github.com/travis-ci/rack-auth-travis'
   spec.license = 'MIT'

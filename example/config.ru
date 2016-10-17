@@ -12,7 +12,7 @@ ENV['TRAVIS_REPO_NAME'] ||= 'bar'
 
 sha256js = File.expand_path('../public/sha256.js', __FILE__)
 
-if !File.exist?(sha256js)
+unless File.exist?(sha256js)
   File.open(sha256js, 'w') do |f|
     open(
       'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha256.js'

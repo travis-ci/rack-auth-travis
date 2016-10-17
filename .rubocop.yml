@@ -1,10 +1,4 @@
 inherit_from: .rubocop_todo.yml
 
-AllCops:
-  Include:
-  - Gemfile
-  - Rakefile
-  - Guardfile
-
 Style/Documentation:
   Enabled: false
