@@ -54,9 +54,9 @@ class Support
           'committer_email' => 'svenfuchs@artweb-design.de',
           'author_name' => 'Sven Fuchs',
           'author_email' => 'svenfuchs@artweb-design.de',
-          'compare_url' => (
+          'compare_url' =>
             'https://github.com/___OWNER___/minimal/compare/master...develop'
-          )
+
         }
       ]
     }

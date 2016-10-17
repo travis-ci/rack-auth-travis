@@ -8,7 +8,7 @@ require 'rack/auth/abstract/request'
 module Rack
   module Auth
     class Travis < ::Rack::Auth::AbstractHandler
-      VERSION = '0.2.0'
+      VERSION = '0.2.0'.freeze
 
       def self.authz(owner_name, name, token)
         ::Digest::SHA256.hexdigest([owner_name, name].join('/') + token)
@@ -59,7 +59,7 @@ module Rack
       end
 
       def challenge
-        %Q(Travis realm="#{realm}")
+        %(Travis realm="#{realm}")
       end
 
       class DIYAuthenticator
@@ -107,7 +107,7 @@ module Rack
         end
 
         def valid?
-          return false unless provided? && travis? && json?
+          return false unless !authorization_key.nil? && travis? && json?
           @authenticators.each do |authenticator|
             return true if authenticator.valid?(self)
           end
@@ -116,21 +116,21 @@ module Rack
 
         def owner_name
           return @owner_name if @owner_name
-          if travis_repo_slug
-            @owner_name = travis_repo_slug.split('/').first
-          else
-            @owner_name = repository['owner_name']
-          end
+          @owner_name = if travis_repo_slug
+                          travis_repo_slug.split('/').first
+                        else
+                          repository['owner_name']
+                        end
           @owner_name
         end
 
         def name
           return @name if @name
-          if travis_repo_slug
-            @name = travis_repo_slug.split('/').last
-          else
-            @name = repository['name']
-          end
+          @name = if travis_repo_slug
+                    travis_repo_slug.split('/').last
+                  else
+                    repository['name']
+                  end
           @name
         end
 
