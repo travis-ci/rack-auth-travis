@@ -1,4 +1,4 @@
-# Copyright &copy; 2013 ModCloth, Inc.
+# Copyright © 2016 Travis CI GmbH
 
 ## MIT License
 

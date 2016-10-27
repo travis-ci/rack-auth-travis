@@ -44,41 +44,39 @@ describe Rack::Auth::Travis do
   end
 
   it 'inherits from Rack::Auth::AbstractHandler' do
-    subject.class.superclass.should == Rack::Auth::AbstractHandler
+    expect(subject.class.superclass).to eq(Rack::Auth::AbstractHandler)
   end
 
   it 'accepts config as a hash' do
-    described_class.new(unprotected_app, realm: 'foo').realm.should == 'foo'
+    expect(described_class.new(unprotected_app, realm: 'foo').realm)
+      .to eq('foo')
   end
 
   it 'provides an array of default authenticators' do
-    described_class.default_authenticators.should_not be_empty
+    expect(described_class.default_authenticators).to_not be_empty
   end
 
   it 'provides a `.valid?` method for checking arbitrary request envs' do
-    described_class.valid?('HTTP_JUST_KIDDING' => '1').should be_false
+    expect(described_class.valid?('HTTP_JUST_KIDDING' => '1')).to eq(false)
   end
 
   context 'when initialized with an authenticator block' do
     it 'adds a DIYAuthenticator' do
-      handler = described_class.new(unprotected_app) { |r, t| true }
+      handler = described_class.new(unprotected_app) { |*| true }
       authenticators = handler.instance_variable_get(:@authenticators)
-      authenticators.map do |a|
-        a.class.name
-      end.should include('Rack::Auth::Travis::DIYAuthenticator')
+      expect(authenticators.map { |a| a.class.name })
+        .to include('Rack::Auth::Travis::DIYAuthenticator')
     end
 
     context 'when the request is authenticated' do
       def app
-        described_class.new(unprotected_app) { |r, t| true }
+        described_class.new(unprotected_app) { |*| true }
       end
 
       it 'responds 200' do
-        post '/', valid_payload_json, {
-          'HTTP_AUTHORIZATION' => valid_auth_header,
-          'CONTENT_TYPE' => 'application/json'
-        }
-        last_response.status.should == 200
+        post '/', valid_payload_json, 'HTTP_AUTHORIZATION' => valid_auth_header,
+                                      'CONTENT_TYPE' => 'application/json'
+        expect(last_response.status).to eq(200)
       end
     end
   end
@@ -89,11 +87,9 @@ describe Rack::Auth::Travis do
     end
 
     it 'does not explode' do
-      post '/', '{asd', {
-        'HTTP_AUTHORIZATION' => 'a' * 64,
-        'CONTENT_TYPE' => 'application/json'
-      }
-      (last_response.status < 500).should be_true
+      post '/', '{asd', 'HTTP_AUTHORIZATION' => 'a' * 64,
+                        'CONTENT_TYPE' => 'application/json'
+      expect(last_response.status).to be < 500
     end
   end
 
@@ -101,9 +97,8 @@ describe Rack::Auth::Travis do
     it 'adds an ENVAuthenticator' do
       handler = described_class.new(unprotected_app)
       authenticators = handler.instance_variable_get(:@authenticators)
-      authenticators.map do |a|
-        a.class.name
-      end.should == ['Rack::Auth::Travis::ENVAuthenticator']
+      expect(authenticators.map { |a| a.class.name })
+        .to eq(['Rack::Auth::Travis::ENVAuthenticator'])
     end
   end
 
@@ -114,7 +109,7 @@ describe Rack::Auth::Travis do
 
     it 'responds 401' do
       post '/foo', '{}'
-      last_response.status.should == 401
+      expect(last_response.status).to eq(401)
     end
   end
 
@@ -124,11 +119,9 @@ describe Rack::Auth::Travis do
     end
 
     it 'responds 401' do
-      post '/', valid_payload_json, {
-        'HTTP_AUTHORIZATION' => 'a' * 64,
-        'CONTENT_TYPE' => 'application/json'
-      }
-      last_response.status.should == 401
+      post '/', valid_payload_json, 'HTTP_AUTHORIZATION' => 'a' * 64,
+                                    'CONTENT_TYPE' => 'application/json'
+      expect(last_response.status).to eq(401)
     end
   end
 
@@ -143,23 +136,19 @@ describe Rack::Auth::Travis do
     after { ENV[env_key] = nil }
 
     it 'responds 200' do
-      post '/', valid_payload_json, {
-        'HTTP_AUTHORIZATION' => valid_auth_header,
-        'CONTENT_TYPE' => 'application/json'
-      }
-      last_response.status.should == 200
+      post '/', valid_payload_json, 'HTTP_AUTHORIZATION' => valid_auth_header,
+                                    'CONTENT_TYPE' => 'application/json'
+      expect(last_response.status).to eq(200)
     end
 
     context 'when Travis-Repo-Slug is present' do
       it 'does not consume rack.input' do
-        Rack::Auth::Travis::Request.any_instance
-          .should_not_receive(:repository)
-        post '/', valid_payload_json, {
-          'HTTP_AUTHORIZATION' => valid_auth_header,
-          'CONTENT_TYPE' => 'application/json',
-          'HTTP_TRAVIS_REPO_SLUG' => repo_slug,
-        }
-        last_response.status.should == 200
+        expect_any_instance_of(Rack::Auth::Travis::Request)
+          .to_not receive(:repository)
+        post '/', valid_payload_json, 'HTTP_AUTHORIZATION' => valid_auth_header,
+                                      'CONTENT_TYPE' => 'application/json',
+                                      'HTTP_TRAVIS_REPO_SLUG' => repo_slug
+        expect(last_response.status).to eq(200)
       end
     end
   end
