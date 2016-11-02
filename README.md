@@ -4,7 +4,9 @@
 anymore** :warning:
 
 For more details, see [this blog
-post](https://blog.travis-ci.com/2016-08-31-webhook-delivery-changes).
+post](https://blog.travis-ci.com/2016-08-31-webhook-delivery-changes) and
+the related [documentation for verifying
+signatures](https://docs.travis-ci.com/user/notifications#Verifying-Webhook-requests).
 
 It's a Rack auth thing for Travis webhook requests!
 
